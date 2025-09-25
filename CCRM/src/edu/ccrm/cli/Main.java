@@ -22,8 +22,19 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		int choice;
 		
+		try {
+			ioService.importStudents("exports/students.csv");
+			ioService.importCourses("export/courses.csv");
+			System.out.println("Data loaded from previous sessions");
+			
+			
+		}
+		catch(Exception e) {
+			System.out.println("No previous data found");
+		}
+		
 		do {
-			System.out.println("\n=== Campus Course & Records Manager(CCRM) ====");
+			System.out.println("\n=== Campus Course & Records Manager(CCRM) ===");
 			System.out.println("1. Manage Students");
 			System.out.println("2. Manage Course");
 			System.out.println("3. Enrollments & Grades");
@@ -61,6 +72,18 @@ public class Main {
 		sc.nextLine();
 		
 		switch(ch) {
+		case 0 ->{
+			try {
+				ioService.exportStudents("exports/courses.csv");
+				ioService.exportCourses("exports/courses.csv");
+				System.out.println("Data saved successfully");
+				
+						
+			}
+			catch(Exception e) {
+				System.out.println("Failed to save data"+e.getMessage());
+			}
+		}
 		case 1 -> {
 			System.out.println("Enter Id:");
 			String id = sc.nextLine();
@@ -84,7 +107,7 @@ public class Main {
 		System.out.println("\n---Course Management");
 		System.out.println("1. Add Course");
 		System.out.println("2. List Courses");
-		System.out.println("Entere Choice");
+		System.out.println("Enter Choice");
 		int ch = sc.nextInt();
 		sc.nextLine();
 		
@@ -137,10 +160,23 @@ public class Main {
 	   default -> Semester.FALL;
 	   };
 	   
+	   System.out.println("Enter Grade(A,B,C,D,F):");
+	   String g = sc.nextLine().trim().toUpperCase();
+	   Grade grade;
+	   try {
+		   grade = Grade.valueOf(g);
+		   
+	   }
+	   catch(IllegalArgumentException e) {
+		   System.out.println("Invalid grade entered. Enrollment aborted.");
+		   return;
+	   }
+	   
 	   try {
 		  
 		   enrollService.enrollStudent(s,c,sem);
-		   System.out.println("Enrollment Successful");
+		   enrollService.assignGrade(s, c, grade);
+		   System.out.println("Enrollment Successful with grade:" +grade);
 	
 	   }
 	   catch (DuplicateEnrollmentException e) {
