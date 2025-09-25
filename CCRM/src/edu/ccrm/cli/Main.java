@@ -54,7 +54,15 @@ public class Main {
 			case 4 -> generateReports();
 			case 5 -> manageImportExport(sc);
 			case 6 -> manageBackup();
-			case 0 -> System.out.println("Exiting");
+			case 0 ->case 0 -> {
+    			try {
+        			ioService.exportStudents("exports/students.csv");
+        			ioService.exportCourses("exports/courses.csv");
+        			System.out.println("Data saved successfully. Exiting...");
+    			} catch (Exception e) {
+        			System.out.println("Failed to save data: " + e.getMessage());
+    			}
+			}
 			default -> System.out.println("Invalid choice,Enter a valic choice");
 			
 			
@@ -72,18 +80,6 @@ public class Main {
 		sc.nextLine();
 		
 		switch(ch) {
-		case 0 ->{
-			try {
-				ioService.exportStudents("exports/courses.csv");
-				ioService.exportCourses("exports/courses.csv");
-				System.out.println("Data saved successfully");
-				
-						
-			}
-			catch(Exception e) {
-				System.out.println("Failed to save data"+e.getMessage());
-			}
-		}
 		case 1 -> {
 			System.out.println("Enter Id:");
 			String id = sc.nextLine();
